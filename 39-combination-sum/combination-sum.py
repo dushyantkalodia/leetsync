@@ -6,13 +6,16 @@ class Solution:
             if target == 0:
                 res.append(curr[:])
                 return
-    
+            prev = -1
             for i in range(pos,len(candidates)):
+                if candidates[i] == prev:
+                    continue
                 if candidates[i]>target:
                     break
                 curr.append(candidates[i])
                 dfs(curr,i,target-candidates[i])
                 curr.pop()
+                prev = candidates[i]
                 
         dfs([],0,target)
         return res
