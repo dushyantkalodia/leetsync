@@ -1,18 +1,28 @@
 class Solution:
     def partition(self, s: str) -> List[List[str]]:
-        result = []
-        lenS = len(s)
+        n = len(s)
+        res = []
+        curr = []
+        
 
-        def explore(index, curr):
-            if index >= lenS:
-                result.append(curr.copy())
+        def ispalindrome(s,l,r):
+            while l<r:
+                if s[l] != s[r]:
+                    return False
+                l += 1
+                r -= 1
 
-            for i in range(index, lenS):
-                subStr = s[index:i + 1]
-                if subStr == subStr[::-1]:
-                    curr.append(subStr)
-                    explore(i + 1, curr)
+            return True
+
+        def backtrack(s,idx,curr,res):
+            if idx == n:
+                res.append(curr[:])
+                return
+        
+            for i in range(idx,n):
+                if ispalindrome(s,idx,i):
+                    curr.append(s[idx:i + 1])
+                    backtrack(s,i+1,curr,res)
                     curr.pop()
-
-        explore(0, [])
-        return result
+        backtrack(s,0,curr,res) 
+        return res
