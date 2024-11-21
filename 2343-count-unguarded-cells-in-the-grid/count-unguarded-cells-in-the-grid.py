@@ -2,40 +2,25 @@ class Solution:
     def countUnguarded(self, m: int, n: int, guards: List[List[int]], walls: List[List[int]]) -> int:
         grid = [[0 for _ in range(n)] for _ in range(m)]
         
-        def markGuarded(row,col,grid):
-            
-            for i in range(row-1,-1,-1):
-                if grid[i][col] == 2 or grid[i][col] == 3:
+        def dfs(row,col,direction):
+            dr,dc = direction
+            r,c = row+dr,col+dc
+            while 0 <= r < m and 0 <= c < n:
+                if grid[r][c] == 2 or grid[r][c] == 3:
                     break
-                grid[i][col] = 1
-          
-            for i in range(row+1,len(grid)):
-                if grid[i][col] == 2 or grid[i][col] == 3:
-                    break
-                grid[i][col] = 1
-            
-            for i in range(col-1,-1,-1):
-                if grid[row][i] == 2 or grid[row][i] == 3:
-                    break
-                grid[row][i] = 1
-            
-            for i in range(col+1,len(grid[0])):
-                if grid[row][i] == 2 or grid[row][i] == 3:
-                    break
-                grid[row][i] = 1
+                if grid[r][c] == 0:
+                    grid[r][c] = 1
+                r+=dr
+                c+=dc
 
-        for vec in guards:
-            i = vec[0]
-            j = vec[1]
+
+        for i,j in guards:
             grid[i][j] = 2
-        for vec in walls:
-            i = vec[0]
-            j = vec[1]
+        for i,j in walls:
             grid[i][j] = 3
-        for guard in guards:
-            i = guard[0]
-            j = guard[1]
-            markGuarded(i,j,grid)
+        for i,j in guards:
+            for direction in [(-1,0),(1,0),(0,-1),(0,1)]:
+                dfs(i,j,direction)
         count = 0
         for i in range(m):
             for j in range(n):
