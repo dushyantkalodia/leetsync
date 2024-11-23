@@ -3,14 +3,14 @@ class Solution:
         m = len(box)
         n = len(box[0])
         res = [['' for _ in range(m)] for _ in range(n)]
-
+        #transpose the matrix
         for i in range(n):
             for j in range(m):
                 res[i][j] = box[j][i]
-        
+        #reverse each row 
         for row in res:
             row.reverse()
-
+        #adjust stones based on gravity
         for j in range(m):
             for i in range(n-1,-1,-1):
                 if res[i][j] == '.':
