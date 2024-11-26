@@ -1,9 +1,12 @@
 class Solution:
     def findChampion(self, grid: List[List[int]]) -> int:
-        indx = 0
-        m = grid[0]
-        for i in range(len(grid)):
-            if sum(grid[i])> sum(m):
-                m = grid[i]
-                indx = i
-        return indx
+        n = len(grid)
+        for i in range(n):
+            isChamp = True
+            for j in range(n):
+                if i != j and grid[j][i] == 1:
+                    isChamp = False
+                    break
+            if isChamp:
+                return i
+        return -1
